@@ -11,7 +11,7 @@ const loginUserAPI = (data: UserType) => {
     return axios.post(URL_BACKEND, data);
 }
 
-const fetchAccountAPI = () => {
+const getAccountAPI = () => {
     const URL_BACKEND = "/api/v1/auth/account";
     return axios.get(URL_BACKEND);
 }
@@ -26,4 +26,22 @@ const refreshTokenAPI = () => {
     return axios.get(URL_BACKEND);
 }
 
-export {registerUserAPI, loginUserAPI, fetchAccountAPI, logoutUserAPI, refreshTokenAPI};
+const activateUserAPI = (data: UserType) => {
+    const URL_BACKEND = "/api/v1/auth/activate";
+    return axios.post(URL_BACKEND, data);
+}
+
+const resendMailAPI = (data: {email: string, type: string}) => {
+    const URL_BACKEND = "/api/v1/auth/resend-mail";
+    return axios.post(URL_BACKEND, data);
+}
+
+const resetUserPasswordAPI = (data: UserType) => {
+    const URL_BACKEND = "/api/v1/auth/reset-password";
+    return axios.post(URL_BACKEND, data);
+}
+
+export {
+    registerUserAPI, loginUserAPI, getAccountAPI, logoutUserAPI, refreshTokenAPI,
+    activateUserAPI, resendMailAPI, resetUserPasswordAPI
+};

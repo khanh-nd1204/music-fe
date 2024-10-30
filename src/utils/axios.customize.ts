@@ -42,4 +42,4 @@ instance.interceptors.response.use(response => {
     return response?.data || error;
 });
 
-export default instance;
+export default instance
