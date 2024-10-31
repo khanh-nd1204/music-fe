@@ -1,6 +1,6 @@
 import axios from "axios";
 import NProgress from 'nprogress';
-import {refreshTokenAPI} from "../services/auth.service.js";
+import {refreshTokenAPI} from "../services/auth.service.ts";
 
 NProgress.configure({ showSpinner: false, trickleSpeed: 100 });
 
