@@ -21,11 +21,11 @@ instance.interceptors.request.use(config => {
 
 instance.interceptors.response.use(response => {
     NProgress.done();
-    return response.data?.data || response;
+    return response?.data || response;
 }, async error => {
     NProgress.done();
     const { config, response } = error;
-    if (response?.status === 401 && !config.headers['x-no-retry']) {
+    if (response?.status === 401 && !config.headers['x-no-retry'] && window.location.pathname !== '/login') {
         const res = await refreshTokenAPI();
         if (res?.data) {
             window.localStorage.setItem('access_token', res.data.access_token);
