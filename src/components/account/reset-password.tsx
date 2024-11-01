@@ -19,8 +19,8 @@ import {resetUserPasswordAPI} from "../../services/auth.service.ts";
 import {Field, Form, Formik, FormikHelpers} from "formik";
 
 interface Props {
-  isOpenPass: boolean;
-  setIsOpenPass: (isOpen: boolean) => void;
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
   email: string;
 }
 
@@ -35,12 +35,12 @@ const validationSchema = Yup.object().shape({
 })
 
 const ResetPassword = (props: Props) => {
-  const {isOpenPass, setIsOpenPass, email} = props;
+  const {isOpen, setIsOpen, email} = props;
   const initialValues: FormValues = { otp: '', newPassword: '' };
   const toast = useToast();
 
   const reset = () => {
-
+    setIsOpen(false);
   }
 
   const handleReset = async (values: FormValues, actions: FormikHelpers<FormValues>) => {
@@ -51,25 +51,19 @@ const ResetPassword = (props: Props) => {
       toast({
         description: res.message,
         status: 'success',
-        duration: 3000,
-        isClosable: true,
-        position: "top-right",
       })
-      setIsOpenPass(false);
+      setIsOpen(false);
     } else {
       toast({
         title: res.error,
         description: Array.isArray(res.message) ? res.message[0] : res.message,
         status: 'error',
-        duration: 3000,
-        isClosable: true,
-        position: "top-right",
       })
     }
   }
 
   return (
-    <Modal isOpen={isOpenPass} onClose={reset} closeOnOverlayClick={false} isCentered>
+    <Modal isOpen={isOpen} onClose={reset} closeOnOverlayClick={false} isCentered>
       <ModalOverlay/>
       <ModalContent mx={{ base: 4 }}>
         <Formik initialValues={initialValues}
@@ -80,7 +74,7 @@ const ResetPassword = (props: Props) => {
             <Form>
               <Stack spacing={4} px={8} my={8}>
                 <Heading lineHeight={1.1} size={{ base: 'sm', md: 'md' }}>
-                  Enter new password
+                  Reset your password
                 </Heading>
                 <Stack spacing={4}>
                   <FormControl isInvalid={!!errors.otp && touched.otp} isRequired>

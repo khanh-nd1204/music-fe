@@ -15,10 +15,11 @@ import {useNavigate} from "react-router-dom";
 interface Props {
   isOpen: boolean;
   email: string;
+  setIsOpen: (isOpen: boolean) => void;
 }
 
 const VerifyEmail = (props: Props) => {
-  const {isOpen, email} = props;
+  const {isOpen, email, setIsOpen} = props;
   const [otp, setOtp] = useState<number>();
   const toast = useToast();
   const navigate = useNavigate();
@@ -30,25 +31,21 @@ const VerifyEmail = (props: Props) => {
       toast({
         description: res.message,
         status: 'success',
-        duration: 3000,
-        isClosable: true,
-        position: "top-right",
       })
+      setIsOpen(false);
       navigate('/login');
     } else {
       toast({
         title: res.error,
         description: Array.isArray(res.message) ? res.message[0] : res.message,
         status: 'error',
-        duration: 3000,
-        isClosable: true,
-        position: "top-right",
       })
     }
   };
 
   const reset = () => {
     setOtp(undefined);
+    setIsOpen(false);
   }
 
   return (
@@ -87,6 +84,7 @@ const VerifyEmail = (props: Props) => {
               colorScheme={'blue'}
               variant={'solid'}
               onClick={handleVerify}
+              type={'submit'}
             >
               Verify
             </Button>

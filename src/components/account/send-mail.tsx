@@ -17,6 +17,7 @@ import * as Yup from "yup";
 import {ResponseType} from "../../types/response.type.ts";
 import {resendMailAPI} from "../../services/auth.service.ts";
 import ResetPassword from "./reset-password.tsx";
+import VerifyEmail from "./verify.tsx";
 
 interface Props {
   type: string;
@@ -33,6 +34,7 @@ const SendMail = (props: Props) => {
   const [email, setEmail] = useState('');
   const [error, setError] = useState();
   const [isOpenPass, setIsOpenPass] = useState(false);
+  const [isOpenVerify, setIsOpenVerify] = useState(false);
 
   const reset = () => {
     setEmail('');
@@ -45,16 +47,17 @@ const SendMail = (props: Props) => {
       setError(undefined);
       const res: ResponseType = await resendMailAPI({email, type});
       if (res && res.data) {
-        setIsOpenPass(true);
+        if (type === 'password') {
+          setIsOpenPass(true);
+        } else {
+          setIsOpenVerify(true);
+        }
         setIsOpen(false);
       } else {
         toast({
           title: res.error,
           description: Array.isArray(res.message) ? res.message[0] : res.message,
           status: 'error',
-          duration: 3000,
-          isClosable: true,
-          position: "top-right",
         })
       }
     } catch (validationError: Yup.ValidationError) {
@@ -69,7 +72,7 @@ const SendMail = (props: Props) => {
         <ModalContent mx={{ base: 4 }}>
           <Stack spacing={4} px={8} my={8}>
             <Heading lineHeight={1.1} size={{ base: 'sm', md: 'md' }}>
-              {type === 'password' ? 'Forgot your password?' : 'Activate account'}
+              {type === 'password' ? 'Forgot your password' : 'Reactivate account'}
             </Heading>
             <Text
               fontSize={{ base: 'sm', sm: 'md' }}
@@ -91,16 +94,19 @@ const SendMail = (props: Props) => {
               colorScheme={'blue'}
               variant={'solid'}
               onClick={handleRequest}
+              type={'submit'}
+              size={{ base: 'sm', md: 'md' }}
             >
               Request
             </Button>
-            <Button colorScheme='gray' ml={3} onClick={reset}>
+            <Button colorScheme='gray' ml={3} onClick={reset} size={{ base: 'sm', md: 'md' }}>
               Close
             </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
-      <ResetPassword isOpenPass={isOpenPass} setIsOpenPass={setIsOpenPass} email={email} />
+      <ResetPassword isOpen={isOpenPass} setIsOpen={setIsOpenPass} email={email} />
+      <VerifyEmail isOpen={isOpenVerify} email={email} setIsOpen={setIsOpenVerify}/>
     </>
   )
 }

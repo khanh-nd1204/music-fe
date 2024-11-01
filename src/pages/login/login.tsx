@@ -49,9 +49,6 @@ const LoginPage = () => {
       toast({
         description: res.message,
         status: 'success',
-        duration: 3000,
-        isClosable: true,
-        position: "top-right",
       })
       dispatch(doLoginAccountAction(res.data));
       navigate("/");
@@ -60,9 +57,10 @@ const LoginPage = () => {
         title: res.error,
         description: Array.isArray(res.message) ? res.message[0] : res.message,
         status: 'error',
-        duration: 3000,
-        isClosable: true,
-        position: "top-right",
+        duration: 2000,
+        onCloseComplete: () => {
+          if (res.statusCode === 400) reactivateAccount();
+        }
       })
     }
   }
@@ -70,6 +68,11 @@ const LoginPage = () => {
   const resetPassword = () => {
     setIsOpen(true);
     setType('password');
+  }
+
+  const reactivateAccount = () => {
+    setIsOpen(true);
+    setType('activate');
   }
 
   return (
@@ -132,7 +135,7 @@ const LoginPage = () => {
             )}
           </Formik>
         </Flex>
-        <Flex flex={1}>
+        <Flex flex={1} display={{ base: 'none', md: 'flex' }}>
           <Image
             alt={'Login Image'}
             objectFit={'cover'}

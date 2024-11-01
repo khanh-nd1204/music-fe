@@ -50,9 +50,6 @@ const RegisterPage = () => {
         title: res.error,
         description: Array.isArray(res.message) ? res.message[0] : res.message,
         status: 'error',
-        duration: 3000,
-        isClosable: true,
-        position: "top-right",
       })
     }
   }
@@ -115,7 +112,7 @@ const RegisterPage = () => {
             )}
           </Formik>
         </Flex>
-        <Flex flex={1}>
+        <Flex flex={1} display={{ base: 'none', md: 'flex' }}>
           <Image
             alt={'Register Image'}
             objectFit={'cover'}
@@ -123,7 +120,7 @@ const RegisterPage = () => {
           />
         </Flex>
       </Stack>
-      <VerifyEmail isOpen={isOpen} email={email}/>
+      <VerifyEmail isOpen={isOpen} email={email} setIsOpen={setIsOpen}/>
     </>
   )
 }
