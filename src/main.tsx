@@ -1,4 +1,4 @@
-import { StrictMode } from 'react'
+// import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import 'nprogress/nprogress.css'
@@ -9,7 +9,7 @@ import {persistor, store} from "./redux/store.ts"
 import { ChakraProvider } from '@chakra-ui/react'
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
+  // <StrictMode>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <ChakraProvider
@@ -19,5 +19,5 @@ createRoot(document.getElementById('root')!).render(
         </ChakraProvider>
       </PersistGate>
     </Provider>
-  </StrictMode>,
+  // </StrictMode>,
 )

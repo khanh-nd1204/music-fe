@@ -51,7 +51,7 @@ const LoginPage = () => {
         status: 'success',
       })
       dispatch(doLoginAccountAction(res.data));
-      navigate("/");
+      res.data.user && res.data.user.role === 'ADMIN' ? navigate('/admin') : navigate('/');
     } else {
       toast({
         title: res.error,

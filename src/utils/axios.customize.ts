@@ -1,6 +1,7 @@
 import axios from "axios";
 import NProgress from 'nprogress';
 import {refreshTokenAPI} from "../services/auth.service.ts";
+import {ResponseType} from "../types/response.type.ts";
 
 NProgress.configure({ showSpinner: false, trickleSpeed: 100 });
 
@@ -26,12 +27,14 @@ instance.interceptors.response.use(response => {
     NProgress.done();
     const { config, response } = error;
     if (response?.status === 401 && !config.headers['x-no-retry'] && window.location.pathname !== '/login') {
-        const res = await refreshTokenAPI();
-        if (res?.data) {
+        const res: ResponseType = await refreshTokenAPI();
+        if (res && res.data) {
             window.localStorage.setItem('access_token', res.data.access_token);
             config.headers.Authorization = 'Bearer ' + res.data.access_token;
             config.headers['x-no-retry'] = 'true';
             return instance.request(config);
+        } else {
+            console.error(res.message);
         }
     }
     if (response?.status === 403 && config.url === '/api/v1/auth/refresh') {

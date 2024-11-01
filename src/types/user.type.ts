@@ -7,4 +7,5 @@ export type UserType = {
   otp?: number,
   newPassword?: string,
   avatar?: string,
+  _id?: string,
 }
